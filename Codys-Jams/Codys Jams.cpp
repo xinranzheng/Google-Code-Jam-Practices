@@ -1,3 +1,4 @@
+/*
 Problem
 
 Cody, the owner of the legendary Cody's Jams store, is planning a huge jam sale. To make things simple, he has decided to sell every item in his store at a 25% discount — that is, each item's sale price is exactly 75% of its regular price. Since all of his regular prices happened to be integers divisible by four, his sale prices are conveniently also all integers.
@@ -15,14 +16,50 @@ The first line of the input gives the number of test cases, T. T test cases foll
 Output
 
 For each test case, output one line containing Case #x: y, where x is the test case number (starting from 1) and y is a list of N integers: the labels containing sale prices, in non-decreasing order.
+*/
 
 #include <fstream>
-#include <unordered_map>
 #include <iostream>
 #include <string>
+#include <queue>
+using namespace std;
+
+void findSales(ifstream& input, ofstream& sales) {
+	queue<int> labels;
+	int cases;
+	input >> cases;
+	int numL;
+	int label;
+	for (int i : cases) {
+		input >> numL;
+		sales << "case #" << i << ": ";
+		for (int i = 1; i < 2 * numL; ++i) {
+			//read in a label, if the front of the queue is its sales label, print out/remove front
+			//otherwise, add label to queue
+			labels >> label
+			if (labels.front() == label * 3 / 4) {
+				sales << labels.front() << ' ';
+				labels.pop();
+			}
+			else {
+				labels.push(label);
+			}
+		}
+	}
+}
 
 int main(){
-	
+	ifstream input;
+	input.open("A-small-practice.in");
+	if (!input) {
+		cerr << "Cannot open file";
+		exit(0);
+	}
+	ofstream output;
+	output.open("output.txt");
+	findSales(input, output);
+	input.close();
+	output.close();	
 }
 
 
