@@ -21,36 +21,40 @@ For each test case, output one line containing Case #x: y, where x is the test c
 #include <fstream>
 #include <iostream>
 #include <string>
-#include <queue>
+#include <vector>
+#include <algorithm>
 using namespace std;
 
 void findSales(ifstream& input, ofstream& sales) {
-	queue<int> labels;
 	int cases;
+	int items;
+	vector<int> prices;
+	int x;
 	input >> cases;
-	int numL;
-	int label;
-	for (int i : cases) {
-		input >> numL;
-		sales << "case #" << i << ": ";
-		for (int i = 1; i < 2 * numL; ++i) {
-			//read in a label, if the front of the queue is its sales label, print out/remove front
-			//otherwise, add label to queue
-			labels >> label
-			if (labels.front() == label * 3 / 4) {
-				sales << labels.front() << ' ';
-				labels.pop();
-			}
-			else {
-				labels.push(label);
+	for (int i = 1; i <= cases; i++) {
+		input >> items;
+		sales << "Case #" << i << ": ";
+		while (items > 0) {
+			input >> x;
+			prices.push_back(x);
+			items -= 1;
+		}
+		for (int j = 0; j < prices.size(); j++) {
+			if (prices[j] != -1) {
+				vector<int>::iterator itr = find(prices.begin()+j, prices.end(), prices[j]/.75);
+				sales << prices[j] << ' ';
+				cout << *itr << endl;
+				*itr = -1;
 			}
 		}
+		prices.clear();
+		sales << endl;
 	}
 }
 
 int main(){
 	ifstream input;
-	input.open("A-small-practice.in");
+	input.open("test.txt");
 	if (!input) {
 		cerr << "Cannot open file";
 		exit(0);
